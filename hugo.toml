@@ -1,0 +1,32 @@
+baseURL = 'https://mikias0x000f.github.io/'
+locale = 'en-us'
+title = 'Simple hidden blog'
+theme = 'hextra'
+
+[params]
+  description = 'SOC Analysis, Home Lab, and Detection Engineering'
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+    lineNos = true
+
+[menu]
+  [[menu.main]]
+    name = 'Posts'
+    pageRef = '/posts'
+    weight = 1
+  [[menu.main]]
+    name = 'About'
+    pageRef = '/about'
+    weight = 2
+  [[menu.main]]
+    name = 'Search'
+    weight = 3
+    params.type = 'search'
+
+# Enable Hextra's features
+[module]
+  [module.hugoVersion]
+    extended = true
+    min = "0.112.0"
