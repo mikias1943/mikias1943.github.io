@@ -25,7 +25,6 @@ theme = 'hextra'
     weight = 3
     params.type = 'search'
 
-# Enable Hextra's features
 [module]
   [module.hugoVersion]
     extended = true
