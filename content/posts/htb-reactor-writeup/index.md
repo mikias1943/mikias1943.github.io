@@ -1,8 +1,8 @@
 ---
-date = '2026-07-09T00:11:19-04:00'
-draft = false
-title = 'HTB Reactor Writeup'
-tags = ['ctf', 'htb']
+title: "HTB Reactor Writeup"
+date: 2026-07-09
+draft: false
+tags: ["ctf", "htb"]
 ---
 
 ## Table of Contents
