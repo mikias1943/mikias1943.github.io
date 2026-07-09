@@ -1,8 +1,8 @@
-+++
-date = '2026-07-08T15:05:06-04:00'
-draft = true
-title = 'Hello World'
-+++
+---
+title: "Hello World"
+date: 2026-07-08
+draft: false
+---
 
 # Welcome to My Security Blog
 
