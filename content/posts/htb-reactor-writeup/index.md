@@ -1,8 +1,9 @@
-+++
+---
 date = '2026-07-09T00:11:19-04:00'
-draft = true
+draft = false
 title = 'HTB Reactor Writeup'
-+++
+tags = ['ctf', 'htb']
+---
 
 ## Table of Contents
 1. [Reconnaissance](#reconnaissance)
