@@ -1,9 +1,9 @@
-
+---
 title: "HTB MakeSense Writeup"
 date: 20260712
 draft: false
 tags: ["ctf", "htb", "wordpress", "xss", "crypto", "privesc", "ocr"]
-
+---
 
 ## Table of Contents
 1. [Reconnaissance](#reconnaissance)
