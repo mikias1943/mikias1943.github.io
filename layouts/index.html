@@ -1,0 +1,64 @@
+{{ define "main" }}
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1>{{ .Site.Title }}</h1>
+      <p>{{ .Site.Params.description | default "Welcome to my blog" }}</p>
+    </section>
+
+    <!-- Tags Section -->
+    <section class="tags">
+      <h2>Browse by Tag</h2>
+      {{ $tags := slice }}
+      {{ range .Site.RegularPages }}
+        {{ range .Params.tags }}
+          {{ $tags = $tags | append . }}
+        {{ end }}
+      {{ end }}
+      {{ $uniqueTags := $tags | uniq }}
+      <ul>
+        {{ range $uniqueTags }}
+          <li><a href="{{ "/tags/" | relURL }}{{ . | urlize }}">{{ . }}</a></li>
+        {{ end }}
+      </ul>
+    </section>
+
+    <!-- Recent Posts -->
+    <section class="recent-posts">
+      <h2>Recent Posts</h2>
+      {{ $pages := where .Site.RegularPages "Section" "posts" }}
+      {{ $paginator := .Paginate $pages 10 }}
+      <ul>
+        {{ range $paginator.Pages }}
+          <li>
+            <article>
+              <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+              <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+              <p>{{ .Summary }}</p>
+              {{ if .Params.tags }}
+                <div class="tags">
+                  {{ range .Params.tags }}
+                    <span class="tag">{{ . }}</span>
+                  {{ end }}
+                </div>
+              {{ end }}
+            </article>
+          </li>
+        {{ end }}
+      </ul>
+      
+      <!-- Pagination -->
+      {{ if gt $paginator.TotalPages 1 }}
+        <div class="pagination">
+          {{ if $paginator.HasPrev }}
+            <a href="{{ $paginator.Prev.URL }}">Previous</a>
+          {{ end }}
+          <span>Page {{ $paginator.PageNumber }} of {{ $paginator.TotalPages }}</span>
+          {{ if $paginator.HasNext }}
+            <a href="{{ $paginator.Next.URL }}">Next</a>
+          {{ end }}
+        </div>
+      {{ end }}
+    </section>
+  </div>
+{{ end }}
