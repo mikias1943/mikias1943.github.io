@@ -34,6 +34,8 @@ The Nmap scan revealed a Next.js application running on port 3000.
 
 ## Initial Access
 
+<!--more-->
+
 ### Discovery
 
 Browsing to `http://<TARGET_IP>:3000/` showed a Next.js web application.

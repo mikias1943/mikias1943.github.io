@@ -1,6 +1,6 @@
 ---
 title: "HTB MakeSense Writeup"
-date: 20260712
+date: 2026-07-12
 draft: false
 tags: ["ctf", "htb", "wordpress", "xss", "crypto", "privesc", "ocr"]
 ---
@@ -41,6 +41,8 @@ I started with a full TCP scan using default scripts and service detection:
 ```bash
 $ sudo nmap sC sV Pn n oA makesense_nmap_scan 10.129.53.17
 ```
+
+<!--more-->
 
 **Results:**
 
