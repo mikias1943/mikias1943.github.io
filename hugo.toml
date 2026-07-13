@@ -13,6 +13,10 @@ theme = 'hextra'
 
 [menu]
   [[menu.main]]
+    name = 'Home'
+    pageRef = '/'
+    weight = 1
+  [[menu.main]]
     name = 'Posts'
     pageRef = '/posts'
     weight = 1
@@ -24,6 +28,10 @@ theme = 'hextra'
     name = 'Search'
     weight = 3
     params.type = 'search'
+  [[menu.main]]
+    name = 'Theme'
+    weight = 4
+    params.type = 'theme-toggle'
 
 [module]
   [module.hugoVersion]

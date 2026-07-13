@@ -1,0 +1,327 @@
+{{ define "main" }}
+{{ $posts := .Pages }}
+{{ $postCount := len $posts }}
+
+{{ $tagSet := slice }}
+{{ range $posts }}
+  {{ range .Params.tags }}
+    {{ $tagSet = $tagSet | append . }}
+  {{ end }}
+{{ end }}
+{{ $uniqueTags := uniq $tagSet }}
+
+<style>
+  .posts-shell{
+    --card-bg:#11161f;
+    --card-bg-hover:#141c27;
+    --border:#1e2733;
+    --border-hover:#2d3a4b;
+    --text:#e6edf3;
+    --text-muted:#8b97a7;
+    --text-dim:#5c6878;
+    --accent:#4ade80;
+    --accent-dim:rgba(74,222,128,.12);
+    --shadow:0 12px 32px rgba(0,0,0,.38);
+    --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --font-mono:ui-monospace,"SF Mono","JetBrains Mono","Fira Code","Cascadia Code",Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+    color:var(--text);
+    font-family:var(--font-sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  html.light .posts-shell{
+    --card-bg:#ffffff;
+    --card-bg-hover:#f4f7fa;
+    --border:#e4e9f0;
+    --border-hover:#cdd6e2;
+    --text:#1c2330;
+    --text-muted:#56606e;
+    --text-dim:#8a94a3;
+    --accent:#1a7f37;
+    --accent-dim:rgba(26,127,55,.09);
+    --shadow:0 12px 32px rgba(15,23,42,.08);
+  }
+
+  /* On mobile, give posts-shell its own background so it looks right
+     when the sidebar is hidden. On desktop, let the body background
+     show through (Hextra handles body bg). */
+  @media (max-width: 767px){
+    .posts-shell{
+      --bg:#0a0e14;
+      background:var(--bg);
+    }
+    html.light .posts-shell{
+      --bg:#fbfcfd;
+      background:var(--bg);
+    }
+  }
+
+  .posts-wrap{ max-width:100%; margin:0 auto; padding:0 0.5rem; }
+
+  .posts-shell .page-head{
+    padding:3rem 0 2rem;
+    border-bottom:1px solid var(--border);
+  }
+  .posts-shell .page-title{
+    font-size:clamp(2rem,5vw,2.8rem);
+    font-weight:800;
+    line-height:1.1;
+    letter-spacing:-.025em;
+    margin:0 0 .5rem;
+    color:var(--text);
+  }
+  .posts-shell .page-sub{
+    font-family:var(--font-mono);
+    font-size:.85rem;
+    color:var(--text-dim);
+  }
+
+  .posts-shell .filter-bar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.5rem;
+    padding:1.75rem 0 1.5rem;
+  }
+  .posts-shell .filter-pill{
+    font-family:var(--font-mono);
+    font-size:.78rem;
+    padding:.4rem .85rem;
+    background:var(--card-bg);
+    color:var(--text-muted);
+    border:1px solid var(--border);
+    border-radius:999px;
+    cursor:pointer;
+    transition:all .15s ease;
+    user-select:none;
+  }
+  .posts-shell .filter-pill:hover{
+    border-color:var(--border-hover);
+    color:var(--text);
+  }
+  .posts-shell .filter-pill.active{
+    background:var(--accent);
+    color:var(--bg);
+    border-color:var(--accent);
+  }
+  .posts-shell .filter-count{
+    opacity:.6;
+    margin-left:.25rem;
+  }
+
+  .posts-shell .post-card{
+    position:relative;
+    padding:1.6rem 1.75rem;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    margin-bottom:1rem;
+    overflow:hidden;
+    transition:transform .2s ease, border-color .2s ease,
+               background .2s ease, box-shadow .2s ease;
+  }
+  .posts-shell .post-card::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:3px;
+    background:var(--accent);
+    transform:scaleY(0);
+    transform-origin:top;
+    transition:transform .25s ease;
+  }
+  .posts-shell .post-card:hover{
+    border-color:var(--border-hover);
+    background:var(--card-bg-hover);
+    transform:translateY(-2px);
+    box-shadow:var(--shadow);
+  }
+  .posts-shell .post-card:hover::before{ transform:scaleY(1); }
+  .posts-shell .post-card.hidden{ display:none; }
+
+  .posts-shell .post-meta{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    font-family:var(--font-mono);
+    font-size:.8rem;
+    color:var(--text-dim);
+    margin-bottom:.65rem;
+  }
+  .posts-shell .meta-sep{ opacity:.55; }
+
+  .posts-shell .post-title{
+    font-size:1.32rem;
+    font-weight:650;
+    line-height:1.3;
+    letter-spacing:-.01em;
+    margin:0 0 .5rem;
+  }
+  .posts-shell .post-title a{
+    color:var(--text);
+    text-decoration:none;
+    transition:color .2s ease;
+  }
+  .posts-shell .post-card:hover .post-title a{ color:var(--accent); }
+
+  .posts-shell .post-summary{
+    font-size:1rem;
+    line-height:1.65;
+    color:var(--text-muted);
+    margin:0 0 1.15rem;
+  }
+
+  .posts-shell .post-foot{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    flex-wrap:wrap;
+  }
+  .posts-shell .post-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.4rem;
+  }
+  .posts-shell .tag-pill{
+    font-family:var(--font-mono);
+    font-size:.72rem;
+    padding:.28rem .62rem;
+    background:var(--accent-dim);
+    color:var(--accent);
+    border:1px solid transparent;
+    border-radius:999px;
+    text-decoration:none;
+    transition:background .15s ease, color .15s ease;
+  }
+  .posts-shell .tag-pill:hover{
+    background:var(--accent);
+    color:var(--bg);
+  }
+
+  .posts-shell .read-more{
+    font-family:var(--font-mono);
+    font-size:.82rem;
+    color:var(--accent);
+    text-decoration:none;
+    white-space:nowrap;
+    opacity:.72;
+    transition:opacity .2s ease;
+  }
+  .posts-shell .post-card:hover .read-more{ opacity:1; }
+  .posts-shell .read-more .arrow{
+    display:inline-block;
+    transition:transform .2s ease;
+  }
+  .posts-shell .post-card:hover .read-more .arrow{ transform:translateX(3px); }
+
+  .posts-shell .empty{
+    color:var(--text-dim);
+    font-family:var(--font-mono);
+    padding:3rem 0;
+    text-align:center;
+  }
+
+  @media (max-width:640px){
+    .posts-wrap{ padding:0 0.25rem; }
+    .posts-shell .page-head{ padding:2.25rem 0 1.5rem; }
+    .posts-shell .post-card{ padding:1.35rem 1.25rem; }
+    .posts-shell .post-foot{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .posts-shell .read-more{ opacity:1; }
+  }
+</style>
+
+<div class="hx:mx-auto hx:flex hextra-max-page-width">
+  {{ partial "sidebar.html" (dict "context" .) }}
+  <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--hextra-navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+    <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+      {{ partial "custom/page-begin.html" . }}
+      {{ partial "breadcrumb.html" (dict "page" . "enable" false) }}
+<div class="posts-shell">
+  <div class="posts-wrap">
+
+    <div class="page-head">
+      <h1 class="page-title">{{ .Title }}</h1>
+      <div class="page-sub">// {{ $postCount }} posts</div>
+    </div>
+
+    {{ if gt (len $uniqueTags) 0 }}
+    <div class="filter-bar">
+      <span class="filter-pill active" data-filter="all">
+        all<span class="filter-count">{{ $postCount }}</span>
+      </span>
+      {{ range $uniqueTags }}
+      {{ $tag := . }}
+      {{ $count := 0 }}
+      {{ range $posts }}
+        {{ if in .Params.tags $tag }}{{ $count = add $count 1 }}{{ end }}
+      {{ end }}
+      <span class="filter-pill" data-filter="{{ $tag | urlize }}">
+        {{ $tag }}<span class="filter-count">{{ $count }}</span>
+      </span>
+      {{ end }}
+    </div>
+    {{ end }}
+
+    <div class="posts-list">
+      {{ range $posts }}
+      {{ $cardTags := slice }}
+      {{ range .Params.tags }}{{ $cardTags = $cardTags | append (. | urlize) }}{{ end }}
+      <article class="post-card"
+        data-tags="{{ delimit $cardTags "," }}">
+        <div class="post-meta">
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+          <span class="meta-sep">·</span>
+          <span>{{ .ReadingTime }} min read</span>
+        </div>
+        <h3 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p class="post-summary">{{ .Summary | plainify | truncate 160 }}</p>
+        <div class="post-foot">
+          <div class="post-tags">
+            {{ range .Params.tags }}
+            <a class="tag-pill" href="/tags/{{ . | urlize }}/">{{ . }}</a>
+            {{ end }}
+          </div>
+          <a class="read-more" href="{{ .RelPermalink }}">Read more <span class="arrow">&rarr;</span></a>
+        </div>
+      </article>
+      {{ else }}
+      <p class="empty">// no posts yet</p>
+      {{ end }}
+    </div>
+
+  </div>
+</div>
+      <div class="hx:mt-16"></div>
+      {{ partial "custom/page-end.html" . }}
+    </main>
+  </article>
+</div>
+
+<script>
+  (function(){
+    const pills = document.querySelectorAll('.posts-shell .filter-pill');
+    const cards = document.querySelectorAll('.posts-shell .post-card');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const filter = pill.dataset.filter;
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        cards.forEach(card => {
+          const tags = (card.dataset.tags || '').split(',');
+          if (filter === 'all' || tags.includes(filter)) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+  })();
+</script>
+{{ end }}

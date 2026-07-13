@@ -2,7 +2,7 @@
 title: "HTB MakeSense Writeup"
 date: 2026-07-12
 draft: false
-tags: ["ctf", "htb", "wordpress", "xss", "crypto", "privesc", "ocr"]
+tags: ["ctf", "htb", "wordpress", "xss"]
 ---
 
 ## Table of Contents

@@ -1,21 +1,7 @@
 {{ define "main" }}
-{{/* ------------------------------------------------------------------
-  Cybersecurity / CTF writeup blog — homepage
-  Drop-in replacement for layouts/index.html (the "main" block).
-  Self-contained: all styles are scoped under .home-shell so they
-  will not collide with the parent theme.
-
-  Theme integration: keys off Hextra's data-theme attribute on <html>
-  (data-theme="light" / "dark") so the homepage stays in sync with
-  Hextra's light/dark/system toggle. Dark mode is the default; light
-  mode activates via html[data-theme="light"]. A prefers-color-scheme
-  fallback covers the rare case where Hextra's theme script hasn't run.
------------------------------------------------------------------- */}}
-
 {{ $posts := where .Site.RegularPages "Section" "posts" }}
 {{ $postCount := len $posts }}
 
-{{/* Collect the unique set of tags across all posts for the hero stats line */}}
 {{ $tagSet := slice }}
 {{ range $posts }}
   {{ range .Params.tags }}
@@ -25,7 +11,6 @@
 {{ $uniqueTags := uniq $tagSet }}
 
 <style>
-  /* ---- Theme tokens (scoped to this block) ---------------------------- */
   .home-shell{
     --bg:#0a0e14;
     --bg-elev:#0f141c;
@@ -43,7 +28,6 @@
     --shadow:0 12px 32px rgba(0,0,0,.38);
     --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
     --font-mono:ui-monospace,"SF Mono","JetBrains Mono","Fira Code","Cascadia Code",Menlo,Monaco,Consolas,"Liberation Mono",monospace;
-
     background:var(--bg);
     color:var(--text);
     font-family:var(--font-sans);
@@ -51,20 +35,10 @@
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
+    min-height:calc(100vh - 4rem);
   }
 
-  /* ---- Theme switching (Hextra data-theme integration) ---------------- */
-  /* Hextra sets data-theme="light" or data-theme="dark" on <html>.
-     When the user picks "system", Hextra's JS resolves it to light/dark
-     based on prefers-color-scheme and sets the attribute accordingly.
-     So we key off the attribute, NOT the media query, so the navbar
-     toggle and our content stay in sync.
-
-     The default .home-shell block above is dark mode (also covers
-     data-theme="dark"). The block below flips to light tokens when
-     Hextra sets data-theme="light". */
-
-  html[data-theme="light"] .home-shell{
+  html.light .home-shell{
     --bg:#fbfcfd;
     --bg-elev:#ffffff;
     --card-bg:#ffffff;
@@ -81,38 +55,8 @@
     --shadow:0 12px 32px rgba(15,23,42,.08);
   }
 
-  /* Pre-JS safety net: if Hextra's theme script hasn't run yet (e.g. JS
-     disabled) and the OS prefers light, fall back to light tokens.
-     Hextra normally sets data-theme via an inline <head> script before
-     render, so this rarely triggers — but it prevents a flash of dark
-     mode for light-mode users without JS. */
-  @media (prefers-color-scheme: light){
-    html:not([data-theme="dark"]):not([data-theme="light"]) .home-shell{
-      --bg:#fbfcfd;
-      --bg-elev:#ffffff;
-      --card-bg:#ffffff;
-      --card-bg-hover:#f4f7fa;
-      --border:#e4e9f0;
-      --border-hover:#cdd6e2;
-      --text:#1c2330;
-      --text-muted:#56606e;
-      --text-dim:#8a94a3;
-      --accent:#1a7f37;
-      --accent-strong:#15803d;
-      --accent-dim:rgba(26,127,55,.09);
-      --accent-glow:rgba(26,127,55,.12);
-      --shadow:0 12px 32px rgba(15,23,42,.08);
-    }
-  }
+  .home-wrap{ max-width:820px; margin:0 auto; padding:0 1.5rem; }
 
-  /* ---- Layout container ----------------------------------------------- */
-  .home-wrap{
-    max-width:820px;
-    margin:0 auto;
-    padding:0 1.5rem;
-  }
-
-  /* ---- Hero ----------------------------------------------------------- */
   .home-shell .hero{
     position:relative;
     padding:4rem 0 3.25rem;
@@ -178,7 +122,6 @@
   .home-shell .stat-sep{ opacity:.45; }
   .home-shell .stat-pill{ color:var(--text-muted); }
 
-  /* ---- Posts section -------------------------------------------------- */
   .home-shell .posts-section{ padding:2.5rem 0 1rem; }
 
   .home-shell .section-head{
@@ -200,7 +143,6 @@
     color:var(--text-dim);
   }
 
-  /* ---- Post card ------------------------------------------------------ */
   .home-shell .post-card{
     position:relative;
     padding:1.6rem 1.75rem;
@@ -315,7 +257,6 @@
     padding:2rem 0;
   }
 
-  /* ---- Footer --------------------------------------------------------- */
   .home-shell .home-footer{
     display:flex;
     align-items:center;
@@ -351,7 +292,6 @@
   }
   .home-shell .social a:hover{ color:var(--accent); }
 
-  /* ---- Responsive ----------------------------------------------------- */
   @media (max-width:640px){
     .home-wrap{ padding:0 1.15rem; }
     .home-shell .hero{ padding:2.75rem 0 2.25rem; }
@@ -361,11 +301,9 @@
       flex-direction:column;
       align-items:flex-start;
     }
-    /* On touch devices keep "read more" visible (no hover available) */
     .home-shell .read-more{ opacity:1; }
   }
 
-  /* ---- Reduced motion ------------------------------------------------- */
   @media (prefers-reduced-motion:reduce){
     .home-shell .cursor{ animation:none; }
     .home-shell *,
@@ -378,7 +316,6 @@
 <div class="home-shell">
   <div class="home-wrap">
 
-    <!-- ===================== HERO ===================== -->
     <section class="hero">
       <div class="hero-prompt">$ whoami<span class="cursor"></span></div>
       <h1 class="hero-title">{{ .Site.Title }}</h1>
@@ -394,7 +331,6 @@
       </div>
     </section>
 
-    <!-- ===================== RECENT POSTS ===================== -->
     <section class="posts-section">
       <div class="section-head">
         <h2 class="section-title">Recent Writeups</h2>
@@ -424,19 +360,8 @@
       {{ end }}
     </section>
 
-    <!-- ===================== FOOTER ===================== -->
     <footer class="home-footer">
       <a href="/posts/" class="view-all">View all posts <span class="arrow">&rarr;</span></a>
-
-      {{/*
-        Optional social links — uncomment and edit to enable.
-        .Site.Params.github / .Site.Params.twitter can be set in config.
-      <div class="social">
-        {{ with .Site.Params.github }}<a href="https://github.com/{{ . }}">github</a>{{ end }}
-        {{ with .Site.Params.twitter }}<a href="https://twitter.com/{{ . }}">twitter</a>{{ end }}
-        <a href="/index.xml">rss</a>
-      </div>
-      */}}
     </footer>
 
   </div>
