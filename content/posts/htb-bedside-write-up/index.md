@@ -1,5 +1,5 @@
 ---
-title: "HTB Bedside Writeup
+title: "HTB Bedside Writeup"
 date: 2026-07-21
 draft: false
 tags: ["ctf", "htb", "pdfminer", "pickle", "deserialization"]
