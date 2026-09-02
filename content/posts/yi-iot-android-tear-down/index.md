@@ -80,7 +80,7 @@ curl -s "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&ap
 # -> {"access_token":"107_Uc3Q...","expires_in":7200}
 ```
 
-- **Unrestricted Google Maps API key** (`AIzaSyDAgXuIIZgOMNC7zjbattZVbyII1NpnPT4`, hardcoded twice in the Manifest). A sweep with [`api_key_sweep.sh`](https://github.com/mikias1943/yi-exploit-scripts/blob/main/api_key_sweep.sh) confirmed **7 paid APIs wide open** geocode, places, timezone, elevation, streetview, staticmap, geolocation quota theft / denial-of-wallet territory:
+- **Unrestricted Google Maps API key** (`AIzaSyDXXXXX`, hardcoded twice in the Manifest). A sweep with [`api_key_sweep.sh`](https://github.com/mikias1943/yi-exploit-scripts/blob/main/api_key_sweep.sh) confirmed **7 paid APIs wide open** geocode, places, timezone, elevation, streetview, staticmap, geolocation quota theft / denial-of-wallet territory:
 
 ```
 [geocode]        -> OK
