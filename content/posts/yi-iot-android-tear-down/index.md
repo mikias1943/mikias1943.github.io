@@ -449,4 +449,4 @@ Beyond GDPR, **ETSI EN 303 645** the European baseline for consumer IoT security
 
 The pattern I keep coming back to: none of these flaws required a zero-day, a debugger wizard, or novel research. A stock proxy, a rooted phone, the vendor's own decompiled code, and an afternoon each. The fixes are equally unglamorous Keystore-backed keys, per-record IVs, TLS verification *on*, salted server-side password hashing, server-side entitlement checks, HTTPS+signature-verified firmware. This ecosystem protects something genuinely intimate, for millions of households, in jurisdictions that have decided in law that this class of product must do better. The camera hardware did its job and refused to stream to a stranger's session; almost every layer of software above it would not have.
 
-*Next post: the cloud phase where we test whether the API's object identifiers actually authorize anything, one vulnerability at a time.*
+*Writeup by Mikias*

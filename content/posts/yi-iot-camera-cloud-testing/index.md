@@ -318,3 +318,5 @@ Claiming `yi-home-tutorials` would let an attacker serve content into the produc
 | C-19 | Unsigned legacy `/vmanager/*` OTA endpoints | Low |
 | C-20 | Mail pipeline returns success while silently dropping blocked domains | Informational |
 | — | **Held:** 71-case cross-account IDOR matrix, device-bind takeover (incl. replayed bindkey), uniform anti-enumeration, social-login token verification, locked buckets/Firebase, actuator ACL, Ghostcat mitigated, WAF on `gw-test` | Positive |
+
+*Writeup by Mikias*
