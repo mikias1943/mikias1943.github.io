@@ -468,12 +468,6 @@ The attack narrative from the attacker's chair: join the victim's network (or th
 
 Part 2's cloud phase required understanding replay windows, canonicalization quirks, and session ladders. This phase required an FTP client.
 
-Across four posts the pattern is consistent: the user-facing security  app authentication, cloud TLS, signed requests, a genuinely solid cross-account authorization layer  is a façade in front of a device that trusts its local network completely. The defense-in-depth is inverted: the strongest cryptography in the ecosystem guards the vendor's cloud API, while the device hands persistent root to anyone who can reach port 21.
-
-The inversion makes sense when you follow the supply chain. This is a Danale-derived, Anyka-SDK, third-party-OEM product riding the YI IoT platform  an ecosystem where, by the platform's own admission, the manufacturer of any given unit is effectively untracked. The factory command port on 6789, the `admin:admin` defaults, the debug-directory boot paths, the unsigned updater  none of these are vulnerabilities anyone wrote on purpose. They're the production line, still running, in your living room.
-
-These findings have been reported to the vendor through responsible disclosure channels.
-
 **Next phase: hardware.** The unit is already in pieces on the bench  UART, the raw flash, and that factory USB gadget stack (`usbburn.ko`) are the obvious doors. Part 5 will be written with a soldering iron in frame.
 
 *Writeup by Mikias*
