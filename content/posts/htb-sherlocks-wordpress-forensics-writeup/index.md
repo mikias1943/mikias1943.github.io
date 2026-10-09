@@ -1,5 +1,5 @@
 ---
-title: "HTB Sherlock Writeup  Apache Log Analysis (Splunk)"
+title: "HTB WordpressWebForensics Writeup"
 date: 2026-10-09
 draft: false
 tags: ["DIFR", "htb", "splunk", "wordpress"]
